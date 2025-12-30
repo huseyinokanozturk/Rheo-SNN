@@ -2,7 +2,7 @@ from src.neuron import LIFNeuron
 import matplotlib.pyplot as plt
 
 """
-Create a LIF Neuron and simulate it for 1000 ms with a constant input current of 10 mV.
+Create a LIF Neuron and simulate it for 1000 ms with a constant input current of 1.5 mV.
 """
 
 voltages = []

@@ -12,9 +12,9 @@ class LIFNeuron:
         Args:
             tau (float): Time constant of the neuron in ms. If tau is large, the neuron will have a long memory.
             dt (float): Time step in ms. Sensitivity of the simulation.
-            threshold (float): Threshold potential of the neuron in V. If the neuron's potential exceeds this value, it will fire.
-            rest_potential (float): Resting potential of the neuron in V. 
-            reset_potential (float): Reset potential of the neuron in V. When the neuron fires, its potential is reset to this value.
+            threshold (float): Threshold potential of the neuron in mV. If the neuron's potential exceeds this value, it will fire.
+            rest_potential (float): Resting potential of the neuron in mV. 
+            reset_potential (float): Reset potential of the neuron in mV. When the neuron fires, its potential is reset to this value.
             refractory_time (float): Refractory period of the neuron in ms. The neuron cannot fire during this period.
         '''
         self.tau = tau
