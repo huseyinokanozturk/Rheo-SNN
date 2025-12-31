@@ -5,87 +5,87 @@ import numpy as np
 import matplotlib.pyplot as plt
 from src.network import Network  
 def run_test():
-    print("🧪 RHEO Network: Detaylı Sistem Testi Başlıyor...")
+    print("🧪 RHEO Network: Detailed System Test Initiated...")
 
-    # 1. AĞ KURULUMU
-    # 50 Nöron: 10 tanesi Girdi (Input), gerisi Hidden/Output
+    # 1. NETWORK SETUP
+    # 50 Neurons: 10 Input neurons, 40 Hidden/Output neurons
     net = Network(num_neurons=50, num_inputs=10, num_outputs=5, dt=0.5)
 
-    # Parametreleri testi net görmek için biraz abartalım
-    net.energy_cost = 5.0        # Çabuk yorulsunlar
-    net.recovery_rate = 0.5      # Orta hızda toparlansınlar
-    net.fatigue_factor = 0.5     # Yorgunluk eşiği sert etkilesin
+    # Exaggerate parameters to visualize effects clearly during testing
+    net.energy_cost = 5.0        # High cost to induce fatigue quickly
+    net.recovery_rate = 0.5      # Moderate recovery rate
+    net.fatigue_factor = 0.5     # Significant impact of fatigue on thresholds
 
-    # 2. SİMÜLASYON DÖNGÜSÜ
+    # 2. SIMULATION LOOP
     steps = 1000
     
-    # Kayıtlar (Log)
-    rec_spikes = []          # Raster Plot için (Zaman, Nöron ID)
-    rec_voltage_n20 = []     # 20. Nöronun Voltajı
-    rec_threshold_n20 = []   # 20. Nöronun Eşiği
-    rec_energy_n20 = []      # 20. Nöronun Enerjisi
-    rec_dopamine = []        # Ortamdaki Dopamin miktarı
+    # Data Logging
+    rec_spikes = []          # Raster Plot data (Time, Neuron ID)
+    rec_voltage_n20 = []     # Voltage trace for Neuron 20
+    rec_threshold_n20 = []   # Adaptive Threshold trace for Neuron 20
+    rec_energy_n20 = []      # Energy Level trace for Neuron 20
+    rec_dopamine = []        # Environmental Dopamine Level
 
-    print(f"⏳ Simülasyon {steps} adım sürecek...")
+    print(f"⏳ Simulation running for {steps} steps...")
 
     for t in range(steps):
-        # A. Girdi Oluştur (Sadece ilk 10 nörona)
-        # 0 ile 5 arasında rastgele akım
+        # A. Generate Input (Only for the first 10 neurons)
+        # Random current between 2 and 8
         inputs = np.random.uniform(2, 8, size=10)
         
-        # B. Senaryo: DOPAMİN YAĞMURU (Adım 400 ile 600 arası)
+        # B. Scenario: DOPAMINE SHOWER (Between steps 400 and 600)
         reward_signal = 0.0
         if 400 <= t < 600:
-            reward_signal = 1.0  # Yüksek Dopamin! (Heyecan)
+            reward_signal = 1.0  # High Dopamine! (Excitement phase)
         
-        # C. Motoru Çalıştır
-        # inputs sadece 10 elemanlı, step fonksiyonu bunu içeride hallediyor
+        # C. Run Simulation Step
+        # 'inputs' has only 10 elements; 'step' method handles mapping to input neurons
         spike_vector = net.step(external_inputs=inputs, reward=reward_signal)
 
-        # D. Veri Kaydetme
-        # 1. Raster Plot için kimlerin ateşlediğini bul
+        # D. Data Recording
+        # 1. Identify firing neurons for Raster Plot
         fired_indices = np.where(spike_vector)[0]
         for idx in fired_indices:
             rec_spikes.append((t, idx))
             
-        # 2. Tek bir nöronu (Örn: 20. Nöron) mercek altına al
-        # (Input nöronu olmayan, içerideki bir nöronu seçtik)
+        # 2. Inspect a single neuron (e.g., Neuron 20)
+        # Choosing an internal neuron (not one of the input neurons)
         rec_voltage_n20.append(net.voltages[20])
         rec_threshold_n20.append(net.thresholds[20])
         rec_energy_n20.append(net.energies[20])
         rec_dopamine.append(net.dopamine)
 
-    print("✅ Simülasyon Tamamlandı. Grafikler çiziliyor...")
+    print("✅ Simulation Completed. Plotting results...")
 
-    # 3. GÖRSELLEŞTİRME
+    # 3. VISUALIZATION
     plt.figure(figsize=(12, 10))
 
-    # Grafik 1: Raster Plot (Tüm Ağın Aktivitesi)
+    # Plot 1: Raster Plot (Network Activity)
     plt.subplot(3, 1, 1)
     if len(rec_spikes) > 0:
         times, neurons = zip(*rec_spikes)
         plt.scatter(times, neurons, s=2, c='black', alpha=0.6)
-    plt.title('Ağ Aktivitesi (Raster Plot)')
-    plt.ylabel('Nöron ID')
-    plt.axvline(x=400, color='green', linestyle='--', label='Dopamin Başlangıç')
-    plt.axvline(x=600, color='red', linestyle='--', label='Dopamin Bitiş')
+    plt.title('Network Activity (Raster Plot)')
+    plt.ylabel('Neuron ID')
+    plt.axvline(x=400, color='green', linestyle='--', label='Dopamine Start')
+    plt.axvline(x=600, color='red', linestyle='--', label='Dopamine End')
     plt.legend(loc='upper right')
 
-    # Grafik 2: Seçilen Nöronun Voltaj ve Eşiği
+    # Plot 2: Selected Neuron Dynamics (Voltage & Threshold)
     plt.subplot(3, 1, 2)
-    plt.plot(rec_voltage_n20, label='Voltaj (V)', color='blue', alpha=0.5)
-    plt.plot(rec_threshold_n20, label='Adaptif Eşik (Th)', color='red', linestyle='--')
-    plt.title('Tekil Nöron Dinamiği (Nöron #20)')
+    plt.plot(rec_voltage_n20, label='Voltage (V)', color='blue', alpha=0.5)
+    plt.plot(rec_threshold_n20, label='Adaptive Threshold (Th)', color='red', linestyle='--')
+    plt.title('Single Neuron Dynamics (Neuron #20)')
     plt.ylabel('mV')
     plt.legend()
 
-    # Grafik 3: Enerji ve Dopamin İlişkisi
+    # Plot 3: Energy vs Dopamine
     plt.subplot(3, 1, 3)
-    plt.plot(rec_energy_n20, label='Enerji (ATP)', color='green')
-    plt.plot(np.array(rec_dopamine)*10 + 50, label='Dopamin Sinyali (Ölçeklenmiş)', color='orange', alpha=0.7)
-    plt.title('Metabolizma ve Nöromodülasyon')
-    plt.xlabel('Zaman (Adım)')
-    plt.ylabel('Seviye')
+    plt.plot(rec_energy_n20, label='Energy (ATP)', color='green')
+    plt.plot(np.array(rec_dopamine)*10 + 50, label='Dopamine Signal (Scaled)', color='orange', alpha=0.7)
+    plt.title('Metabolism & Neuromodulation')
+    plt.xlabel('Time (Steps)')
+    plt.ylabel('Level')
     plt.legend()
 
     plt.tight_layout()
