@@ -2,7 +2,7 @@
 
 A **Spiking Neural Network (SNN)** simulation featuring biologically-inspired learning with metabolic constraints and hormonal modulation.
 
-## 🧠 Project Novelty
+##  Project Novelty
 
 ### Metabolic Constraints
 Unlike traditional neural networks, RHEO neurons have:
@@ -17,7 +17,7 @@ The network features neuromodulators that affect behavior:
 - **Serotonin (5HT)**: Stress response that spikes on failure
 - **Exploration Noise**: Increases after failed epochs to try new paths
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 rheo-snn/
@@ -43,7 +43,7 @@ rheo-snn/
 └── README.md
 ```
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Requirements
 ```bash
@@ -55,7 +55,7 @@ pip install numpy pygame
 python -m main
 ```
 
-## 🎮 Controls
+##  Controls
 
 ### Main Menu
 | Button | Function |
@@ -74,7 +74,7 @@ python -m main
 | `0` | Toggle Turbo Mode (10x speed) |
 | `ESC` | Return to menu (auto-saves brain) |
 
-## 🗺️ Map Editor
+##  Map Editor
 
 Create custom environments with the visual editor.
 
@@ -94,7 +94,7 @@ Create custom environments with the visual editor.
 
 Maps are saved to `src/environment/maps/` as JSON files.
 
-## 💾 Brain Persistence
+##  Brain Persistence
 
 ### Auto-Save
 The brain automatically saves to `brain_weights/brain_weights.npz` when:
@@ -104,7 +104,7 @@ The brain automatically saves to `brain_weights/brain_weights.npz` when:
 ### Manual Load
 Click **LOAD** in the menu to restore a previously trained brain. The network dimensions (sensors, hidden neurons) must match.
 
-## 📊 Experiment Logs
+##  Experiment Logs
 
 Performance data is automatically saved to `experiments/`:
 - **simulation_stats.json**: Latest session (overwritten)
@@ -119,7 +119,7 @@ Performance data is automatically saved to `experiments/`:
 | `weights_mean/std` | Synaptic weight evolution |
 | `success_epochs` | Goal completion times (learning curve) |
 
-## 🔬 Network Architecture
+##  Network Architecture
 
 ```
 Input Layer (Sensors)      Hidden Layer (Processing)     Output Layer (Motors)
@@ -135,7 +135,7 @@ Input Layer (Sensors)      Hidden Layer (Processing)     Output Layer (Motors)
 | Hidden → Hidden | (50, 50) | No |
 | Hidden → Output | (2, 50) | **Yes (R-STDP)** |
 
-## 📈 Learning Mechanism
+##  Learning Mechanism
 
 ### R-STDP (Reward-modulated Spike-Timing Dependent Plasticity)
 1. **Eligibility Trace**: Tracks recent pre-post spike correlations
@@ -149,7 +149,7 @@ After epoch timeout:
 - Exploration noise increases 3x
 - Forces agent to try new strategies
 
-## 🛠️ Configuration
+##  Configuration
 
 Edit `main.py` to adjust defaults:
 ```python
@@ -161,5 +161,3 @@ DEFAULT_CONFIG = {
 ```
 
 ---
-
-**Made with 🧠 and 💻**
